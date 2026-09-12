@@ -1,0 +1,584 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);color:var(--color-text-primary);background:transparent}
+.container{max-width:860px;margin:0 auto;padding:1.5rem 1rem}
+.top-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:0.5px solid var(--color-border-tertiary)}
+.tab-btn{padding:6px 14px;font-size:13px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);cursor:pointer;background:var(--color-background-primary);color:var(--color-text-secondary);font-family:var(--font-sans)}
+.tab-btn.active{background:var(--color-background-secondary);color:var(--color-text-primary);font-weight:500;border-color:var(--color-border-primary)}
+.tab-btn:hover{background:var(--color-background-secondary)}
+.section{display:none}
+.section.active{display:block}
+.week-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);margin-bottom:1.25rem;overflow:hidden}
+.week-header{padding:0.9rem 1.25rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:var(--color-background-secondary)}
+.week-header:hover{background:var(--color-background-tertiary)}
+.week-title{font-size:15px;font-weight:500;color:var(--color-text-primary)}
+.week-sub{font-size:12px;color:var(--color-text-secondary);margin-top:2px}
+.chevron{font-size:12px;color:var(--color-text-secondary);transition:transform 0.2s}
+.chevron.open{transform:rotate(180deg)}
+.week-body{display:none;padding:1.25rem;border-top:0.5px solid var(--color-border-tertiary)}
+.week-body.open{display:block}
+h3{font-size:14px;font-weight:500;color:var(--color-text-primary);margin:1rem 0 0.5rem;padding-left:0.75rem;border-left:2px solid var(--color-border-secondary)}
+h3:first-child{margin-top:0}
+p{font-size:14px;color:var(--color-text-secondary);line-height:1.7;margin-bottom:0.6rem}
+ul{padding-left:1.2rem;margin-bottom:0.75rem}
+li{font-size:14px;color:var(--color-text-secondary);line-height:1.7;margin-bottom:2px}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:var(--border-radius-md);margin-right:4px;margin-bottom:4px;font-weight:500}
+.badge-blue{background:var(--color-background-info);color:var(--color-text-info)}
+.badge-green{background:var(--color-background-success);color:var(--color-text-success)}
+.badge-amber{background:var(--color-background-warning);color:var(--color-text-warning)}
+.badge-red{background:var(--color-background-danger);color:var(--color-text-danger)}
+.q-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);margin-bottom:1rem;overflow:hidden}
+.q-header{padding:0.85rem 1.25rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.q-header:hover{background:var(--color-background-secondary)}
+.q-text{font-size:14px;font-weight:500;flex:1;line-height:1.5}
+.q-mark{font-size:12px;padding:3px 10px;border-radius:var(--border-radius-md);white-space:nowrap;font-weight:500}
+.m8{background:var(--color-background-info);color:var(--color-text-info)}
+.m10{background:var(--color-background-warning);color:var(--color-text-warning)}
+.m12{background:var(--color-background-danger);color:var(--color-text-danger)}
+.q-answer{display:none;padding:1rem 1.25rem;border-top:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary)}
+.q-answer.open{display:block}
+.ans-label{font-size:11px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.6rem}
+.ans-text{font-size:13px;color:var(--color-text-secondary);line-height:1.75}
+.ans-text h4{font-size:13px;font-weight:500;color:var(--color-text-primary);margin:0.75rem 0 0.3rem}
+.ans-text h4:first-child{margin-top:0}
+.tip-box{background:var(--color-background-success);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:0.65rem 0.9rem;margin-top:0.75rem;font-size:12px;color:var(--color-text-success)}
+.filter-row{display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap}
+.filter-btn{padding:5px 12px;font-size:12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);cursor:pointer;background:var(--color-background-primary);color:var(--color-text-secondary);font-family:var(--font-sans)}
+.filter-btn.active{font-weight:500;color:var(--color-text-primary);background:var(--color-background-secondary);border-color:var(--color-border-primary)}
+.divider{height:0.5px;background:var(--color-border-tertiary);margin:1rem 0}
+</style>
+
+<div class="container">
+<div class="top-nav">
+  <button class="tab-btn active" onclick="showTab('notes')">Study Notes</button>
+  <button class="tab-btn" onclick="showTab('questions')">Exam Questions</button>
+</div>
+
+<div id="notes" class="section active">
+
+  <div class="week-card">
+    <div class="week-header" onclick="toggleWeek(this)">
+      <div><div class="week-title">Week 5 — Democracy in Pakistan</div><div class="week-sub">Concept of Democracy · Historical Development · Structural Problems</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="week-body">
+      <h3>What is Democracy?</h3>
+      <p>Democracy means rule of the people (Greek: <em>demos</em> = people, <em>kratos</em> = rule). Sovereignty belongs to citizens and authority is exercised through elected representatives.</p>
+      <h3>Core Principles</h3>
+      <ul>
+        <li><strong>Popular Sovereignty</strong> — People are the ultimate source of authority</li>
+        <li><strong>Rule of Law</strong> — Law applies equally to all, from PM to citizen</li>
+        <li><strong>Constitutional Supremacy</strong> — No institution is above the Constitution</li>
+        <li><strong>Separation of Powers</strong> — Executive, Legislature, and Judiciary are independent</li>
+        <li><strong>Political Pluralism</strong> — Opposition parties are allowed and respected</li>
+        <li><strong>Accountability & Transparency</strong> — Government decisions can be questioned</li>
+      </ul>
+      <p>Pakistan operates under the 1973 Constitution establishing a parliamentary system.</p>
+      <h3>Types of Democracy</h3>
+      <ul>
+        <li><strong>Direct Democracy</strong> — Citizens vote directly on laws (e.g. Swiss referendums; not feasible in Pakistan)</li>
+        <li><strong>Representative Democracy</strong> — Citizens elect representatives (National Assembly, Senate, Provincial Assemblies)</li>
+        <li><strong>Social Democracy</strong> — Economic justice alongside political rights (e.g. Ehsaas Program)</li>
+      </ul>
+      <h3>Historical Timeline</h3>
+      <p><span class="badge badge-amber">1947–1958</span> Early Years: Refugee crisis, Kashmir War, leadership vacuum after Jinnah's death (1948). Six PMs in seven years. 1956 Constitution adopted, then abrogated by Iskander Mirza → Ayub Khan's Martial Law.</p>
+      <p><span class="badge badge-amber">1958–1969</span> Ayub Khan: 1962 Presidential Constitution, Basic Democracies, economic growth but political repression, East Pakistan marginalized.</p>
+      <p><span class="badge badge-amber">1971</span> Yahya Khan's 1970 elections: Mujib won, power not transferred → Civil war → Bangladesh.</p>
+      <p><span class="badge badge-amber">1971–1977</span> Bhutto Era: 1973 Constitution (parliamentary, federalism, fundamental rights), but power centralization, opposition suppression, 1977 coup.</p>
+      <p><span class="badge badge-amber">1977–1988</span> Zia-ul-Haq: Martial Law, Islamization, 8th Amendment (President could dismiss PM), democracy structurally weakened.</p>
+      <p><span class="badge badge-blue">1988–1999</span> Decade of Democracy: Benazir (2 tenures), Nawaz (2 tenures), all four govts dismissed. Article 58(2)(b) enabled President to dismiss PM. Democracy functioned electorally but not institutionally.</p>
+      <p><span class="badge badge-amber">1999–2008</span> Musharraf: 17th Amendment, judicial crisis 2007, Lawyers' Movement. 2008 elections restored democracy.</p>
+      <p><span class="badge badge-blue">2008–2013</span> PPP (Zardari): 18th Amendment — parliamentary supremacy restored, provincial autonomy, presidential powers reduced. First party to complete full term.</p>
+      <p><span class="badge badge-blue">2013–2018</span> PML-N (Nawaz): CPEC, energy improvements, Panama Papers → disqualification.</p>
+      <p><span class="badge badge-blue">2018–2022</span> PTI (Imran Khan): welfare reforms, anti-corruption, IMF negotiations, removed via no-confidence vote.</p>
+      <p><span class="badge badge-blue">2022–Present</span> PDM then 2024 elections: Shehbaz Sharif PM, economic crisis, political polarization.</p>
+      <h3>Structural Problems of Democracy in Pakistan</h3>
+      <ul>
+        <li>Military influence over civilian governments</li>
+        <li>Weak intra-party democracy</li>
+        <li>Judicial activism interfering with governance</li>
+        <li>Economic instability weakening governments</li>
+        <li>Elite dominance in politics</li>
+        <li>Political intolerance and polarization</li>
+      </ul>
+      <h3>Conclusion</h3>
+      <p>Pakistan's democracy has collapsed three times (1958, 1977, 1999), survived constitutional crises, and returned through elections repeatedly. It remains <em>resilient but fragile</em>. Its future depends on constitutional supremacy, civilian control, economic reforms, and institutional balance.</p>
+    </div>
+  </div>
+
+  <div class="week-card">
+    <div class="week-header" onclick="toggleWeek(this)">
+      <div><div class="week-title">Week 7 — Issues of Federalism & New Provinces</div><div class="week-sub">New Province Demands · Local Government · 18th Amendment</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="week-body">
+      <h3>Current Federal Structure</h3>
+      <p>Pakistan has four provinces: Punjab, Sindh, Khyber Pakhtunkhwa (KPK), Balochistan; plus federal territories: Islamabad Capital Territory, Gilgit-Baltistan, and Azad Jammu & Kashmir.</p>
+      <h3>Why Regions Demand New Provinces</h3>
+      <ul>
+        <li><strong>Unequal Development</strong> — Large provinces concentrate spending in major cities (e.g. Lahore vs South Punjab)</li>
+        <li><strong>Administrative Inefficiency</strong> — Punjab has 120+ million people; too large to manage</li>
+        <li><strong>Cultural/Linguistic Identity</strong> — Seraiki speakers, Hazara people feel identity is ignored</li>
+        <li><strong>Political Representation</strong> — Peripheral regions underrepresented in provincial leadership</li>
+      </ul>
+      <h3>Constitutional Framework — Article 239(4)</h3>
+      <p>Creating a new province requires: (1) Constitutional amendment bill in Parliament, (2) Two-thirds majority in both National Assembly and Senate, (3) Two-thirds majority in the concerned Provincial Assembly.</p>
+      <h3>Major Provincial Demands</h3>
+      <ul>
+        <li><strong>South Punjab</strong> — Multan, Bahawalpur, DG Khan, Rahim Yar Khan. Higher poverty, lower literacy, political marginalization from Central Punjab.</li>
+        <li><strong>Bahawalpur</strong> — Formerly a princely state; demand for restoration of its administrative identity.</li>
+        <li><strong>Hazara Province</strong> — Abbottabad, Mansehra, Haripur; demand arose after 2010 KPK renaming emphasized Pashtun identity. Hazara people speak Hindko.</li>
+        <li><strong>Seraiki Province</strong> — Linguistic identity basis; Seraiki speakers argue other provinces (Sindh, KPK) are language-based.</li>
+        <li><strong>Urban Sindh (Karachi/Hyderabad)</strong> — Claims urban areas contribute most tax revenue but decisions controlled by rural Sindhi elites.</li>
+        <li><strong>FATA Merger (2018)</strong> — FATA merged into KPK; abolished Frontier Crimes Regulation; shows reorganization is possible with political consensus.</li>
+      </ul>
+      <h3>Arguments For New Provinces</h3>
+      <ul><li>Better governance through smaller units</li><li>Balanced development and resource distribution</li><li>Political empowerment of local populations</li><li>Strengthening federalism</li></ul>
+      <h3>Arguments Against New Provinces</h3>
+      <ul><li>Ethnic fragmentation risk</li><li>High financial cost (new secretariats, courts, bureaucracies)</li><li>Political manipulation for votes</li><li>Administrative complexity in federal coordination</li></ul>
+      <h3>Administrative vs Ethnic Models</h3>
+      <p><strong>Administrative model</strong> — Based on governance efficiency (e.g. divide Punjab into North/Central/South). Reduces ethnic tensions.<br><strong>Ethnic model</strong> — Based on cultural identity (e.g. Seraiki province). Strengthens identity but may intensify ethnic politics.</p>
+      <h3>Local Government Systems</h3>
+      <p><strong>Basic Democracies (1959, Ayub Khan)</strong> — 4-tier structure; 80,000 Basic Democrats served as electoral college for President. Bureaucracy dominated; criticized as legitimizing authoritarian rule.</p>
+      <p><strong>Local Govt Ordinance 1979 (Zia-ul-Haq)</strong> — Separate urban/rural structures; local taxation powers; but provinces retained suspension/dissolution authority.</p>
+      <p><strong>Local Govt Ordinance 2001 (Musharraf)</strong> — Most ambitious reform; devolution of political, administrative, financial authority to districts. District Nazim as political head. Citizen Community Boards, Zila Mohtasib. Dismantled after 2007.</p>
+      <h3>18th Amendment (2010) — Article 140A</h3>
+      <p>Each province must establish local government, devolve political/administrative/financial authority, and hold local elections via Election Commission. First time LGs received constitutional protection. Provinces enacted own LG laws in 2013.</p>
+      <h3>Provincial LG Comparison</h3>
+      <ul>
+        <li><strong>Punjab</strong> — Restored urban-rural divide; District Education/Health Authorities under provincial control</li>
+        <li><strong>Sindh</strong> — Union Committees replace Union Councils; Mayor supervisory but province retains control</li>
+        <li><strong>KPK</strong> — Most decentralized; Village/Neighborhood Councils; 30% dev budget guaranteed to LGs</li>
+        <li><strong>Balochistan</strong> — Strong provincial supervision; divisional coordination committees</li>
+      </ul>
+      <p>Population per local unit: KPK 2,000–10,000 | Balochistan 1,000–1,500 | Punjab 10,000–20,000 | Sindh 40,000–50,000</p>
+    </div>
+  </div>
+
+  <div class="week-card">
+    <div class="week-header" onclick="toggleWeek(this)">
+      <div><div class="week-title">Week 8 — Neo-Liberal Governance & Poverty</div><div class="week-sub">Neoliberalism · Privatization · Structural Adjustment · Inequality</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="week-body">
+      <h3>Colonial Roots of Poverty</h3>
+      <p>British colonial rule extracted resources (cotton, wheat, minerals), weakened local industries, and forced cash crop farming. This is called <em>accumulation by dispossession</em> — wealth transferred from local populations to powerful groups. Pakistan inherited a weak industrial base and dependence on foreign aid.</p>
+      <h3>Phases of Capitalism</h3>
+      <ul>
+        <li><strong>Mercantilism (16th–18th c.)</strong> — Accumulate gold; colonize for resources</li>
+        <li><strong>Industrial Capitalism (19th c.)</strong> — Factories, mass production, urbanization</li>
+        <li><strong>Welfare Capitalism (Post-WWII)</strong> — Social security, public healthcare, free education</li>
+        <li><strong>Neoliberal Capitalism (1970s+)</strong> — Free markets, privatization, limited state intervention</li>
+      </ul>
+      <p>The 1970s economic crisis of <em>overaccumulation</em> (too much capital, not enough profitable investment) pushed companies to seek new markets in developing countries.</p>
+      <h3>Accumulation by Dispossession (David Harvey)</h3>
+      <p>Wealth created by taking public resources and transferring to private owners through: privatization, land dispossession, commodification of natural resources, contract labor, debt repayment burden, and regressive taxation (indirect taxes hitting the poor harder).</p>
+      <h3>Marxist Analysis</h3>
+      <p>Marx: capitalism divides society into <em>bourgeoisie</em> (capital owners) and <em>proletariat</em> (wage workers). Lenin: capitalism expands globally through imperialism — powerful countries dominate weaker ones economically.</p>
+      <h3>Introduction of Neoliberalism in Pakistan</h3>
+      <p>Adopted in late 1980s under pressure from IMF and World Bank. Programs included Stand-By Arrangements, Structural Adjustment Programs (SAP), and Poverty Reduction and Growth Facility. These required reducing subsidies, increasing taxes, and privatizing state enterprises.</p>
+      <h3>Core Neoliberal Policies</h3>
+      <p><strong>1. Liberalization</strong> — Reducing government restrictions; lowering tariffs; allowing foreign companies. In Pakistan, cheap imports (especially from China) flooded the market, hurting local industries and causing unemployment.</p>
+      <p><strong>2. Privatization</strong> — Transferring govt enterprises to private ownership. Examples: KESC privatized 2005 (electricity prices increased, service inconsistent); PTCL privatized 2006 (sold at low price, thousands lost jobs).</p>
+      <p><strong>3. Deregulation</strong> — Removing government controls on businesses. Can lead to worker exploitation, environmental damage, monopolies.</p>
+      <h3>Impact of Structural Adjustment Programs</h3>
+      <ul><li>Higher unemployment</li><li>Reduced welfare programs</li><li>Increased poverty</li><li>Cuts to education and healthcare spending</li></ul>
+      <h3>Social Restructuring</h3>
+      <ul>
+        <li><strong>Elite class</strong> — Extremely wealthy, control industries, influence politics</li>
+        <li><strong>Culture of Contentment</strong> — Middle-class professionals benefiting from globalization</li>
+        <li><strong>Vulnerable workers</strong> — Contract/daily wage laborers with unstable jobs</li>
+        <li><strong>Marginalized poor</strong> — Slum dwellers, unemployed youth excluded from economic opportunities</li>
+      </ul>
+      <h3>Human Insecurity Types</h3>
+      <ul><li>Job insecurity (temporary work, layoffs)</li><li>Health insecurity (expensive private hospitals)</li><li>Education insecurity (high private school fees)</li><li>Food insecurity</li><li>Environmental insecurity (industrial pollution)</li></ul>
+      <h3>Recent Poverty Drivers</h3>
+      <p><strong>Food inflation</strong> — Poor households spend 60–70% of income on food; price increases devastate them.<br><strong>Energy prices</strong> — Pakistan imports oil; global price increases raise electricity, transport, and production costs.</p>
+      <h3>Resistance & Alternatives</h3>
+      <p>Lawyers' Movement protested privatization of Pakistan Steel Mills and political interference in judiciary. Alternatives to neoliberalism: strengthen welfare state, reform international financial institutions, design locally-suited development strategies.</p>
+    </div>
+  </div>
+
+  <div class="week-card">
+    <div class="week-header" onclick="toggleWeek(this)">
+      <div><div class="week-title">Week 9 — Obstacles to Economic Development</div><div class="week-sub">Internal & External Barriers · Agriculture · Infrastructure · Governance</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="week-body">
+      <h3>What is Economic Development?</h3>
+      <p>Continuous improvement in people's lives: better income, more jobs, improved education/healthcare, strong infrastructure, and poverty reduction.</p>
+      <h3>Key Economic Problems</h3>
+      <ul>
+        <li><strong>Inflation</strong> — Rising prices reduce purchasing power (e.g. flour Rs.50 → Rs.100)</li>
+        <li><strong>Budget Deficit</strong> — Spending exceeds income → loans → increasing debt → less for development</li>
+        <li><strong>Weak Governance</strong> — Poor policy implementation, corruption, declining public trust</li>
+        <li><strong>Low Investment</strong> — Fewer factories, limited jobs, slow growth</li>
+        <li><strong>Political Instability</strong> — Frequent govt changes → investor uncertainty → inconsistent policies</li>
+      </ul>
+      <h3>Historical Economic Overview</h3>
+      <p><strong>1947–1960</strong> — No industrial base, weak banking, limited trained workforce. Built from scratch.<br><strong>1960s</strong> — GDP growth 6.8%, industrialization, textile/cement/steel sectors. But growth under non-democratic rule; benefits unevenly distributed.<br><strong>Post-1971</strong> — Loss of East Pakistan weakened economy. Political instability, policy inconsistency.<br><strong>1990s reforms</strong> — Privatization, trade liberalization, deregulation. Mixed results.</p>
+      <h3>Agricultural Sector Problems</h3>
+      <ul>
+        <li><strong>Water scarcity</strong> — Melting glaciers, poor irrigation, water wastage, unequal distribution</li>
+        <li><strong>Poor management</strong> — Lack of farmer education, weak research, poor fertilizer distribution</li>
+        <li><strong>Natural disasters</strong> — Reduce soil fertility, kill livestock, drive farmers into debt (2010 floods: billions in losses)</li>
+        <li><strong>Traditional farming</strong> — Low yield, high water use, inefficient land use; modern technology could transform productivity</li>
+      </ul>
+      <h3>Internal Obstacles</h3>
+      <ul>
+        <li><strong>SMEs</strong> — High interest rates, lack of technology, poor marketing; cannot compete globally</li>
+        <li><strong>Labor market</strong> — Low literacy, lack of technical education, brain drain</li>
+        <li><strong>Tax evasion</strong> — Complex tax system, low trust in government, weak enforcement</li>
+        <li><strong>Regional inequality</strong> — Major cities (Karachi, Lahore, Islamabad) far better than rural areas; causes urban migration</li>
+        <li><strong>Corruption & bureaucracy</strong> — Raises cost of doing business, discourages investors, slows decisions</li>
+      </ul>
+      <h3>External Obstacles</h3>
+      <ul>
+        <li><strong>Political instability</strong> — Investors prefer stable countries</li>
+        <li><strong>Terrorism</strong> — Increases risk, reduces investment</li>
+        <li><strong>Foreign policy challenges</strong> — Tensions with India affect trade</li>
+        <li><strong>Low FDI</strong> — Foreign investors want stability, security, profit certainty</li>
+      </ul>
+      <h3>Infrastructure Deficit</h3>
+      <p>Poor roads, energy shortages, weak transport systems → high cost of production. Macroeconomic risks (inflation, debt, fiscal deficits) create further uncertainty.</p>
+      <h3>Circular Economy</h3>
+      <p>Traditional economy: Use → Dispose. Circular economy: Use → Reuse. Benefits: saves energy, reduces pollution, creates recycling jobs. Pakistan struggles due to lack of recycling plants, poor waste collection, low public awareness.</p>
+      <h3>Slow Economic Diversification</h3>
+      <p>Pakistan relies heavily on textile exports. If global textile demand falls, the entire economy becomes vulnerable. Banks prefer large businesses, leaving SMEs underdeveloped.</p>
+      <h3>What Pakistan Needs</h3>
+      <ul><li>Strong, stable governance</li><li>Investment in education and skills</li><li>Better infrastructure</li><li>Support for industries and SMEs</li><li>Circular economy practices</li></ul>
+    </div>
+  </div>
+
+  <div class="week-card">
+    <div class="week-header" onclick="toggleWeek(this)">
+      <div><div class="week-title">Week 10 — Foreign Policy of Pakistan</div><div class="week-sub">Basic Concepts · National Interest · Determinants · Geo-Strategic Importance</div></div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="week-body">
+      <h3>What is Foreign Policy?</h3>
+      <p>Foreign policy = how a country deals with other countries; all decisions/plans/actions to protect national interests internationally. It covers political relations (treaties, embassies), economic relations (trade, investment), military relations (defense pacts), and cultural relations (soft power).</p>
+      <h3>Key Features of Foreign Policy</h3>
+      <ul>
+        <li><strong>Dynamic</strong> — Changes with global situations (e.g. Pakistan shifting from USA to China focus)</li>
+        <li><strong>Interest-Based</strong> — Every decision protects national interest</li>
+        <li><strong>Realistic/Practical</strong> — Countries act on benefit, not emotion</li>
+      </ul>
+      <h3>National Interest</h3>
+      <p><strong>Primary (Vital) Interests</strong> — Survival of state, border protection, national security/defense. A country will do anything to protect these.<br><strong>Secondary Interests</strong> — Trade, economic growth, diplomatic relations, international reputation. These can change over time.</p>
+      <p>Key principle: <em>"There are no permanent friends or enemies, only permanent interests."</em></p>
+      <h3>Pakistan's Foreign Policy Goals</h3>
+      <ul><li>Protect sovereignty and territorial integrity</li><li>Build a strong economy</li><li>Develop friendly relations with all countries</li><li>Gain international recognition</li><li>Promote peace and cooperation</li></ul>
+      <h3>Phases of Pakistan's Foreign Policy</h3>
+      <ul>
+        <li><strong>Early Years</strong> — Dependence on Western countries for aid and security</li>
+        <li><strong>Cold War</strong> — Joined SEATO and CENTO for security against India and Soviet threat</li>
+        <li><strong>Post-1971</strong> — Focus on rebuilding after Bangladesh separation</li>
+        <li><strong>Modern Era</strong> — Strong partnership with China (CPEC); balancing USA and China</li>
+      </ul>
+      <h3>Determinants of Foreign Policy</h3>
+      <ul>
+        <li><strong>National Security</strong> — Most important; protection from India (external) and terrorism (internal)</li>
+        <li><strong>Economic Factor</strong> — Strong economy = strong foreign policy; includes IMF loans, trade, CPEC</li>
+        <li><strong>Ideological Factor</strong> — Pakistan's Islamic identity; promotes Muslim world unity while maintaining balance</li>
+        <li><strong>Historical Factor</strong> — Past conflicts (India-Pakistan wars) create long-term mistrust</li>
+        <li><strong>Geographical Factor</strong> — Connects South Asia, Central Asia, and Middle East; Gwadar Port as trade hub</li>
+      </ul>
+      <h3>Principles of Pakistan's Foreign Policy</h3>
+      <ul><li>Islamic unity — strengthen relations with Muslim countries</li><li>Good relations with neighbours</li><li>Peace — prefer dialogue over war</li><li>Self-determination — support for Kashmir, Palestine</li><li>Peaceful co-existence — respect sovereignty</li><li>UN charter and international law</li><li>Independent policy — balance major powers</li></ul>
+      <h3>Foreign Policy-Making Structure</h3>
+      <p>Key actors: (1) Administrative Troika — PM, President, Army Chief; (2) Foreign Ministry — handles diplomacy; (3) Intelligence Agencies — security information; (4) Political Parties — public opinion; (5) Parliament — debate and accountability.</p>
+      <h3>India Factor</h3>
+      <p>India is the most important external factor since 1947 due to Kashmir dispute, past wars (1948, 1965, 1971), and military rivalry. Effects: heavy defense spending, need for alliances, continuous diplomatic efforts on Kashmir. Recent: India removed Article 370 (2019), Pulwama-Balakot crisis (2019).</p>
+      <h3>Geo-Strategic Importance</h3>
+      <p>Pakistan connects South Asia, Central Asia, and the Middle East. It borders China, India, Afghanistan, and Iran; has access to Arabian Sea. Gwadar Port can connect China and Central Asia to international markets via CPEC/Belt and Road Initiative.</p>
+      <p><strong>Advantages</strong> — Trade opportunities, foreign investment, strategic value.<br><strong>Disadvantages</strong> — Foreign interference, security threats, involvement in global conflicts.</p>
+      <h3>Role in Global Conflicts</h3>
+      <p><strong>Cold War</strong> — Joined USA alliance (SEATO, CENTO) for security and economic aid; became dependent on USA.<br><strong>War on Terror</strong> — Supported USA post-9/11, allowed military operations. Result: terrorism increased (TTP), billions in losses, social problems. Operations: Zarb-e-Azb, Radd-ul-Fasaad.<br><strong>Afghan War</strong> — Millions of Afghan refugees increased economic burden; drug trafficking spread; drone attacks violated sovereignty.<br><strong>Post-2021</strong> — Taliban took Afghanistan; increased border insecurity and cross-border attacks on Pakistan.</p>
+    </div>
+  </div>
+
+</div>
+
+<div id="questions" class="section">
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="filterQ('all',this)">All questions</button>
+    <button class="filter-btn" onclick="filterQ('8',this)">8 marks</button>
+    <button class="filter-btn" onclick="filterQ('10',this)">10 marks</button>
+    <button class="filter-btn" onclick="filterQ('12',this)">12 marks</button>
+  </div>
+
+  <div class="q-card" data-mark="8">
+    <div class="q-header" onclick="toggleQ(this)">
+      <span class="q-text">Explain the core principles of democracy and discuss why Pakistan's democracy has remained fragile despite regular elections.</span>
+      <span class="q-mark m8">8 marks</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="q-answer">
+      <div class="ans-label">Model answer outline</div>
+      <div class="ans-text">
+        <h4>Introduction</h4>
+        <p>Define democracy (rule of the people; Greek: demos + kratos). Pakistan operates under the 1973 Constitution establishing a parliamentary system.</p>
+        <h4>Core principles (list and briefly explain each)</h4>
+        <p>Popular Sovereignty, Rule of Law, Constitutional Supremacy, Separation of Powers, Political Pluralism, and Accountability & Transparency.</p>
+        <h4>Why democracy remains fragile</h4>
+        <p>1. Military interference — democracy has collapsed three times (1958, 1977, 1999). 2. Article 58(2)(b) — allowed President to dismiss PM; all four govts in 1988–99 dismissed. 3. Political polarization and intolerance among parties. 4. Elite dominance — feudal and business elites control parties. 5. Economic instability — poor economy weakens civilian governments. 6. Weak institutional maturity — courts, parliament, parties not fully independent.</p>
+        <h4>Conclusion</h4>
+        <p>Pakistan's democracy is resilient but fragile — it has returned through elections repeatedly but requires constitutional supremacy and civilian control to truly strengthen.</p>
+        <div class="tip-box">Tip: Mention 3–4 specific historical examples (Ayub 1958, Zia 1977, Musharraf 1999, Decade of Democracy dismissals) to score full marks.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-card" data-mark="8">
+    <div class="q-header" onclick="toggleQ(this)">
+      <span class="q-text">What are the major demands for new provinces in Pakistan? Discuss the constitutional requirements for creating a new province.</span>
+      <span class="q-mark m8">8 marks</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="q-answer">
+      <div class="ans-label">Model answer outline</div>
+      <div class="ans-text">
+        <h4>Introduction</h4>
+        <p>Pakistan has four provinces. The issue of new provinces relates to federalism, governance, and political representation. No new province has been created since 1970.</p>
+        <h4>Constitutional requirements — Article 239(4)</h4>
+        <p>Constitutional amendment bill in Parliament → two-thirds majority in National Assembly AND Senate → two-thirds majority in the concerned Provincial Assembly. Very difficult due to political disagreements and provincial elite resistance.</p>
+        <h4>Major demands</h4>
+        <p>South Punjab (development gap, political marginalization), Bahawalpur (historic princely state), Hazara (cultural identity — Hindko vs Pashto, triggered by 2010 KPK renaming), Seraiki (linguistic identity), Urban Sindh/Karachi (tax contribution vs rural political control).</p>
+        <h4>Why no new province yet</h4>
+        <p>Lack of political consensus, ethnic sensitivities, financial costs, fear of precedent.</p>
+        <div class="tip-box">Tip: The FATA merger into KPK in 2018 is a good example showing reorganization IS possible when consensus exists.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-card" data-mark="8">
+    <div class="q-header" onclick="toggleQ(this)">
+      <span class="q-text">Discuss the major obstacles to economic development in Pakistan, focusing on either internal or external factors.</span>
+      <span class="q-mark m8">8 marks</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="q-answer">
+      <div class="ans-label">Model answer outline</div>
+      <div class="ans-text">
+        <h4>Introduction</h4>
+        <p>Economic development means improved income, jobs, education, healthcare, and poverty reduction. Pakistan has struggled with deep-rooted challenges since 1947.</p>
+        <h4>Internal factors (choose 4–5)</h4>
+        <p>Inflation, budget deficit, weak governance, low investment, political instability, tax evasion, regional inequality (Karachi/Lahore vs rural), corruption and bureaucracy, weak SME sector, brain drain.</p>
+        <h4>Agricultural sector specifically</h4>
+        <p>Water scarcity, poor management, natural disasters (2010 floods cost billions), traditional farming methods limiting productivity.</p>
+        <h4>OR External factors</h4>
+        <p>Decline in FDI (investors want stability), terrorism increasing risk, India tensions limiting trade, global economic crises.</p>
+        <h4>Conclusion</h4>
+        <p>Pakistan needs stable governance, education investment, infrastructure improvement, and SME support to achieve sustainable growth.</p>
+        <div class="tip-box">Tip: The 2010 floods example is very strong — mention it with specific impact (millions homeless, crops destroyed, billions in losses).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-card" data-mark="10">
+    <div class="q-header" onclick="toggleQ(this)">
+      <span class="q-text">Critically analyze the impact of neoliberal economic policies on poverty and inequality in Pakistan.</span>
+      <span class="q-mark m10">10 marks</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="q-answer">
+      <div class="ans-label">Model answer outline</div>
+      <div class="ans-text">
+        <h4>Introduction</h4>
+        <p>Define neoliberalism — a phase of capitalism promoting free markets, privatization, and deregulation. Introduced in Pakistan in the late 1980s under IMF/World Bank pressure. Three core policies: liberalization, privatization, deregulation.</p>
+        <h4>Historical context</h4>
+        <p>Colonial roots: British extraction of resources created poverty (accumulation by dispossession). Post-independence Pakistan inherited weak industry, dependence on foreign aid, susceptibility to global capitalist pressures.</p>
+        <h4>Impact of each policy</h4>
+        <p><strong>Liberalization</strong> — Cheap Chinese imports flooded markets; local industries (toys, electronics) unable to compete; factory closures and unemployment.<br><strong>Privatization</strong> — KESC: electricity prices rose, quality inconsistent. PTCL: sold cheap, thousands lost jobs.<br><strong>Deregulation</strong> — Worker exploitation, environmental damage, monopolies emerged.</p>
+        <h4>Structural Adjustment Programs</h4>
+        <p>SAPs required cutting social spending → higher unemployment, reduced welfare, increased poverty. Education and healthcare underfunded.</p>
+        <h4>Social class divisions</h4>
+        <p>Society split into elite class, contentment class (corporate professionals), vulnerable workers (contract labor), and marginalized poor (slum dwellers, unemployed youth).</p>
+        <h4>Human insecurity</h4>
+        <p>Job, health, education, food, and environmental insecurity increased. Poor households spend 60–70% of income on food; rising food and energy prices devastate them.</p>
+        <h4>Conclusion with alternatives</h4>
+        <p>Neoliberalism aimed for growth but increased inequality. Alternatives: strengthen welfare state, reform IFIs, design locally-suited strategies.</p>
+        <div class="tip-box">Tip: Use David Harvey's concept of "accumulation by dispossession" and Marx's bourgeoisie/proletariat for theoretical depth. Mention KESC and PTCL as concrete examples.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-card" data-mark="10">
+    <div class="q-header" onclick="toggleQ(this)">
+      <span class="q-text">Evaluate the local government systems introduced in Pakistan from 1959 to 2001. Which system was most effective and why?</span>
+      <span class="q-mark m10">10 marks</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="q-answer">
+      <div class="ans-label">Model answer outline</div>
+      <div class="ans-text">
+        <h4>Introduction</h4>
+        <p>Define local government — the third tier of governance managing local affairs. Pakistan's LG systems were largely introduced by military regimes seeking political legitimacy.</p>
+        <h4>Basic Democracies (1959 — Ayub Khan)</h4>
+        <p>4-tier structure (Union Council → Divisional Council); 80,000 Basic Democrats elected as presidential electoral college. Bureaucracy (Deputy Commissioners) dominated; could suspend resolutions and control budgets. Criticism: legitimized authoritarian rule, not genuine democracy. Benefit: introduced rural political participation.</p>
+        <h4>Local Government Ordinance (1979 — Zia-ul-Haq)</h4>
+        <p>Separate rural/urban structures. Local taxation powers (property tax, tolls). Less bureaucratic interference than Ayub's system. Limitation: provinces could still suspend and dissolve councils.</p>
+        <h4>Local Government Ordinance (2001 — Musharraf)</h4>
+        <p>Most ambitious reform. Devolution of political, administrative, financial authority to districts. District Nazim as elected head; DCO reported to Nazim. Key features: Citizen Community Boards (80% govt/20% citizen projects), Zila Mohtasib (ombudsman), Muslihat Committees (dispute resolution). Abolished urban-rural divide. 2001–07: Human Development Index improved. Weakness: non-party elections weakened accountability; provincial resistance; no financial sustainability. Dismantled post-2008.</p>
+        <h4>Assessment</h4>
+        <p>The 2001 system was structurally strongest due to genuine devolution, citizen participation, and constitutional grounding via later 18th Amendment (Article 140A). However, all three systems lacked true fiscal autonomy and were introduced without provincial buy-in.</p>
+        <h4>18th Amendment (2010)</h4>
+        <p>First constitutional protection for LGs. Each province must establish LG and devolve authority. However, provinces still retain strong control in practice.</p>
+        <div class="tip-box">Tip: Structure your answer chronologically. Dedicate roughly equal space to each system and then provide a comparative conclusion. The question asks for evaluation, so pick a side and justify it.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-card" data-mark="10">
+    <div class="q-header" onclick="toggleQ(this)">
+      <span class="q-text">Discuss the major determinants of Pakistan's foreign policy and explain the geo-strategic significance of Pakistan's location.</span>
+      <span class="q-mark m10">10 marks</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="q-answer">
+      <div class="ans-label">Model answer outline</div>
+      <div class="ans-text">
+        <h4>Introduction</h4>
+        <p>Define foreign policy — how a country deals with other countries to protect national interests. Key principle: "There are no permanent friends or enemies, only permanent interests."</p>
+        <h4>Determinants of foreign policy</h4>
+        <p><strong>1. National Security</strong> — Most important factor. Threats from India (Kashmir, wars) and terrorism. Pakistan spends heavily on defense.<br><strong>2. Economic Factor</strong> — Weak economy = dependence on others. IMF loans, CPEC, trade partnerships are all driven by economic need.<br><strong>3. Ideological Factor</strong> — Islamic ideology promotes Muslim world unity (OIC participation); balanced with relations with all states.<br><strong>4. Historical Factor</strong> — Three India-Pakistan wars (1948, 1965, 1971) create deep mistrust shaping all decisions.<br><strong>5. Geographical Factor</strong> — Location between South Asia, Central Asia, and Middle East; Gwadar Port as trade hub.</p>
+        <h4>Geo-strategic significance</h4>
+        <p>Pakistan borders China (ally), India (rival), Afghanistan (conflict zone), Iran; has Arabian Sea access. It is a bridge between regions — enabling trade, energy pipelines, and military routes. CPEC connects China to international markets through Gwadar. Afghanistan matters enormously — peace in Afghanistan = peace in Pakistan (shared 2,600 km border).</p>
+        <h4>Double-edged nature</h4>
+        <p>Advantages: trade opportunities, foreign investment, strategic importance, global attention. Disadvantages: foreign interference, security threats, involvement in global conflicts (Cold War, War on Terror).</p>
+        <h4>Phases of foreign policy</h4>
+        <p>Early years (Western dependence) → Cold War (SEATO/CENTO) → Post-1971 rebuilding → Modern era (China partnership via CPEC, balancing USA and China).</p>
+        <div class="tip-box">Tip: Connect each determinant to a real example. Security → India wars; Economic → CPEC/IMF; Geography → Gwadar. This shows application, not just memorization.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-card" data-mark="12">
+    <div class="q-header" onclick="toggleQ(this)">
+      <span class="q-text">Trace the evolution of democracy in Pakistan from 1947 to the present. Why has democracy repeatedly failed and what structural reforms are needed?</span>
+      <span class="q-mark m12">12 marks</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="q-answer">
+      <div class="ans-label">Model answer outline</div>
+      <div class="ans-text">
+        <h4>Introduction (~50 words)</h4>
+        <p>Define democracy and its core principles. State that Pakistan has experienced three military coups (1958, 1977, 1999) but democracy has survived and returned each time. The 1973 Constitution remains the supreme governing document.</p>
+        <h4>Phase 1: Early instability (1947–1958)</h4>
+        <p>Refugee crisis, weak economy, Kashmir War, Jinnah's early death. Six PMs in seven years. Lack of political culture. 1956 Constitution, then abrogated. Ayub Khan's 1958 coup — first democratic breakdown.</p>
+        <h4>Phase 2: Military rule (1958–1971)</h4>
+        <p>Ayub Khan: presidential system, Basic Democracies, economic growth but political repression and East Pakistan marginalization. Yahya Khan: 1970 elections, Mujib won, power not transferred → 1971 war → Bangladesh. Demonstrated that denying electoral results destroys federation.</p>
+        <h4>Phase 3: Bhutto and Zia (1971–1988)</h4>
+        <p>1973 Constitution: Pakistan's best democratic achievement (parliamentary, federalism, fundamental rights). Bhutto: centralization of power, opposition suppression, 1977 election controversy → Zia's coup. Zia: Martial Law, Islamization, 8th Amendment enabling President to dismiss PM — structurally weakened democracy.</p>
+        <h4>Phase 4: Decade of Democracy (1988–1999)</h4>
+        <p>Four civilian govts, all dismissed using Article 58(2)(b). Benazir (2 terms), Nawaz (2 terms). Civil-military imbalance, corruption allegations, political polarization. Democracy electoral but not institutional.</p>
+        <h4>Phase 5: Musharraf and restoration (1999–2013)</h4>
+        <p>1999 coup, 17th Amendment. 2007 judicial crisis, Lawyers' Movement — shows civil society resistance. 2008 elections. PPP: 18th Amendment (2010) — most significant democratic reform since 1973; restored parliamentary supremacy, devolved power, first party to complete full term.</p>
+        <h4>Phase 6: Recent period (2013–present)</h4>
+        <p>PML-N (CPEC, Panama disqualification), PTI (welfare reforms, no-confidence vote 2022), PDM and 2024 elections. Ongoing political polarization and institutional tensions.</p>
+        <h4>Why democracy has repeatedly failed</h4>
+        <p>Military interference (structural), weak civilian institutions, Article 58(2)(b) until 13th Amendment, economic instability, political intolerance, elite dominance of parties, lack of intra-party democracy.</p>
+        <h4>Structural reforms needed</h4>
+        <p>Enforce constitutional supremacy (no institution above Constitution), genuine civilian control of military, strengthen independent judiciary, free and fair elections, economic stability to reduce military's leverage, intra-party democracy, political tolerance.</p>
+        <h4>Conclusion</h4>
+        <p>Pakistan's democracy is resilient — it has returned each time. But resilience is not the same as maturity. True democratic consolidation requires institutional balance, not just electoral cycles.</p>
+        <div class="tip-box">Tip: For 12-mark answers, structure with clear headings/phases. Aim for 600–700 words. Include at least 6–8 historical examples. End with a forward-looking conclusion about what reforms are needed.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-card" data-mark="12">
+    <div class="q-header" onclick="toggleQ(this)">
+      <span class="q-text">Analyze Pakistan's foreign policy with reference to its relations with India, the USA, and China. How does Pakistan balance competing great power interests?</span>
+      <span class="q-mark m12">12 marks</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="q-answer">
+      <div class="ans-label">Model answer outline</div>
+      <div class="ans-text">
+        <h4>Introduction</h4>
+        <p>Define foreign policy. State that Pakistan's foreign policy is shaped by geography, security (India), and economic needs. Pakistan has historically balanced between great powers to maximize security and economic benefits.</p>
+        <h4>India Factor — Core Rivalry</h4>
+        <p>Most important determinant since 1947. Three wars (1948 Kashmir, 1965, 1971 Bangladesh). Kashmir remains core unresolved dispute — Pakistan supports right of self-determination. Nuclear tests 1998 (both). India's Article 370 removal 2019 increased tensions. Pulwama-Balakot crisis showed proximity to military escalation. Effect: Pakistan maintains large military, seeks alliances to balance India.</p>
+        <h4>USA Relations — Alliance with complications</h4>
+        <p>Cold War: Pakistan joined SEATO and CENTO for security against India and USSR; received military/economic aid but became dependent. War on Terror post-9/11: supported USA, allowed operations, provided bases and intelligence. Why? Pressure to avoid being declared enemy; need for economic aid. Negative effects: TTP rise, billions in losses, drone attacks violated sovereignty. Trust deficit: USA often pressured Pakistan on terrorism; relationship transactional rather than strategic. Post-Afghanistan (2021): USA's interest in Pakistan reduced significantly.</p>
+        <h4>China Relations — Strategic Partnership</h4>
+        <p>Pakistan's most reliable ally. China provides political support (UN Security Council), economic investment (CPEC — roads, ports, energy), and military equipment. CPEC connects China's Xinjiang to Gwadar Port; part of Belt and Road Initiative. China helps Pakistan balance India's rise. Key: China never pressured Pakistan the way USA did. However: Pakistan must balance Chinese interests with its own sovereignty.</p>
+        <h4>Balancing great powers</h4>
+        <p>Pakistan tries to balance USA and China — not fully aligned with either. During Cold War: firmly in Western camp. Post-2000: increasingly close to China while maintaining some USA relations. This balancing act is driven by: (1) economic need for both, (2) China as security partner against India, (3) USA as financial lifeline (IMF, World Bank influence). Challenge: as USA-China rivalry intensifies, neutrality becomes harder.</p>
+        <h4>Afghanistan dimension</h4>
+        <p>Afghan instability directly affects Pakistan: refugee burden, drug trafficking, TTP terrorism. Taliban takeover 2021 increased border insecurity. Peace in Afghanistan is essential for Pakistan's own stability.</p>
+        <h4>Geo-strategic value</h4>
+        <p>Pakistan's location makes it valuable to both USA and China. Gwadar Port gives China Indian Ocean access. Pakistan can leverage this strategic location — but risks becoming a pawn in great power competition.</p>
+        <h4>Conclusion</h4>
+        <p>Pakistan needs an independent, interest-based foreign policy. Over-dependence on USA (Cold War) or China (current) both carry risks. A strong domestic economy would reduce dependence and enable a truly independent foreign policy — the essential foundation for effective international relations.</p>
+        <div class="tip-box">Tip: Organize by each bilateral relationship, then have a synthesis section on balancing. Key phrase to use: "There are no permanent friends or enemies, only permanent interests." This shows conceptual understanding.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-card" data-mark="12">
+    <div class="q-header" onclick="toggleQ(this)">
+      <span class="q-text">Discuss the debate over new provinces in Pakistan. Evaluate arguments for and against, and assess whether creating new provinces would strengthen or weaken Pakistan's federation.</span>
+      <span class="q-mark m12">12 marks</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="q-answer">
+      <div class="ans-label">Model answer outline</div>
+      <div class="ans-text">
+        <h4>Introduction</h4>
+        <p>Pakistan's four provinces were established in 1970 after the abolition of the One Unit scheme. Demands for new provinces reflect deeper issues of governance, identity, resource distribution, and federal balance.</p>
+        <h4>Historical context</h4>
+        <p>One Unit Scheme (1955–1970) merged all West Pakistan provinces — created resentment among Sindhis, Baloch, and Pashtuns. Its abolition showed centralized systems ignoring regional identity cannot survive. FATA merger into KPK (2018) shows reorganization is possible with consensus.</p>
+        <h4>Major demands (cover 3–4)</h4>
+        <p><strong>South Punjab</strong> — Higher poverty, lower literacy, political marginalization from Central Punjab elites. Multan, Bahawalpur, DG Khan lag far behind Lahore in development.<br><strong>Hazara Province</strong> — Triggered by 2010 KPK renaming emphasizing Pashtun identity. Hazara people (Hindko speakers) feel culturally excluded. Large protests, some deaths.<br><strong>Seraiki Province</strong> — Linguistic rights argument: if Sindh and KPK are language-based, Seraiki speakers deserve same.<br><strong>Urban Sindh/Karachi</strong> — Contributes most tax revenue but decisions controlled by rural political elites.</p>
+        <h4>Constitutional requirements</h4>
+        <p>Article 239(4): Two-thirds majority in Parliament plus two-thirds in concerned Provincial Assembly. No new province created since 1970 due to political disagreement and provincial elite resistance.</p>
+        <h4>Arguments FOR</h4>
+        <p>Better governance (smaller, manageable units), balanced development (resources go to local priorities), political empowerment, strengthening federalism. International examples: India created Telangana (2014), Uttarakhand, Jharkhand; Nigeria went from 3 regions to 36 states.</p>
+        <h4>Arguments AGAINST</h4>
+        <p>Ethnic fragmentation risk, high financial costs (secretariats, courts, police, bureaucracies), political manipulation (promises without implementation), administrative complexity in federal coordination, fear of setting precedent.</p>
+        <h4>Administrative vs Ethnic model</h4>
+        <p>Administrative: divide for efficiency, reduces ethnic tensions. Ethnic: recognizes cultural rights but intensifies ethnic politics. Best approach: combine both — ensure new provinces meet both administrative efficiency and cultural representation criteria.</p>
+        <h4>Assessment — would it strengthen or weaken federation?</h4>
+        <p>Strengthen IF: broad political consensus, constitutional procedure followed, economic feasibility assessed, national unity maintained. Weaken IF: driven by ethnic conflict, political opportunism, or without financial planning.</p>
+        <h4>Conclusion</h4>
+        <p>The question is not whether to create new provinces, but how. If handled responsibly — with consensus, constitutional process, and economic planning — new provinces can improve governance and satisfy legitimate grievances, strengthening the federation. Without these conditions, they risk fragmenting it further.</p>
+        <div class="tip-box">Tip: The examiner wants both sides presented fairly, then a clear conclusion. Use "on one hand... on the other hand... however, on balance..." structure. International examples (India, Nigeria) add strong comparative analysis marks.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+function showTab(id){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+function toggleWeek(el){
+  const body=el.nextElementSibling;
+  const ch=el.querySelector('.chevron');
+  body.classList.toggle('open');
+  ch.classList.toggle('open');
+}
+function toggleQ(el){
+  const ans=el.nextElementSibling;
+  const ch=el.querySelector('.chevron');
+  ans.classList.toggle('open');
+  ch.classList.toggle('open');
+}
+function filterQ(mark,btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.q-card').forEach(c=>{
+    if(mark==='all'||c.dataset.mark===mark) c.style.display='block';
+    else c.style.display='none';
+  });
+}
+</script>
